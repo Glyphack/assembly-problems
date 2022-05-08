@@ -1,6 +1,9 @@
+
 %include "in_out.asm"
 
 section .data
+	result: db 25h
+	binary: db ?
 
 section .bss
 	num:	resb 8
@@ -12,9 +15,6 @@ section .text
 _start:
 	call	readNum
 	mov		[num], rax
-	call	readNum
-	mov		[num2], rax
-	add		rax, [num]
 	call	writeNum
 
 
