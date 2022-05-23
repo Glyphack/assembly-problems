@@ -17,6 +17,7 @@
 
 section .bss
     a:   resq 1000000
+    len: resq 1
     min: resq 1
     max: resq 1
     query: resq 1
@@ -28,17 +29,16 @@ section .text
     global _start
 _start:
     call readNum
-    push rax
+    mov qword [len], rax
     dec rax
     mov qword [max], rax
-    pop rax
     mov qword [min], 0
 
     ; Read input array
 	mov r9, 0
 	mov rsi, a
 loop:
-	cmp r9, rax
+	cmp r9, qword [len]
 	je getQueries
     call readNum
     mov qword [rsi], rax 
@@ -56,6 +56,7 @@ getQuery:
     je Exit
     call readNum
     mov [query], rax
+    mov rcx, -1
     push qword [query]
     push qword [max]
     push qword [min]
@@ -95,19 +96,29 @@ binarySearch:
     push rbp
     mov rbp, rsp
 
+    ; push rax
+    ; mov rax, qword [rbp+16]
+    ; call writeNum
+    ; call newLine
+    ; mov rax, qword[rbp+24]
+    ; call writeNum
+    ; call newLine
+    ; call newLine
+    ; pop rax
+
     ; if max < min return
-    push rax
-    mov rax, qword[rbp+24]
-    cmp rax, qword [rbp+16]
-    mov rcx, -1
-    pop rax
-    jb epilogue
+    push r11
+    mov r11, qword[rbp+24]
+    cmp r11, qword [rbp+16]
+    pop r11
+    jl epilogue
+
 
     ; calc mid in rax
     mid rbp+16, rbp+24, rax
 
-    ; call newLine
     ; call writeNum
+    ; call newLine
 
     ; check if mid is query
     mov r9, a
