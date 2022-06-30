@@ -2,11 +2,12 @@
 
 section .bss
 section .data
-    n: dq 10
+    n: dq 3
     f: dq 0
 section .text
-    global _start
-_start:
+    global main
+
+main:
     push qword [n]
     call fac
     add rsp, 8
@@ -21,8 +22,6 @@ Exit:
 
 fac:
     ; rbp+16: n
-    
-    ;prologue
     push rbp
     mov rbp, rsp
 
